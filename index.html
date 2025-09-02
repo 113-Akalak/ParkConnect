@@ -34,10 +34,8 @@
 </head>
 
 <body class="bg-gray-100 font-sans">
-    <!-- Main Container -->
     <div class="max-w-4xl mx-auto bg-white min-h-screen">
 
-        <!-- Header with Prototype Mode Toggle -->
         <header class="bg-gradient-to-r from-primary-600 to-primary-700 text-white p-6">
             <div class="flex items-center justify-between mb-4">
                 <h1 class="text-2xl font-bold">สวนธนบุรีรมย์ Prototype</h1>
@@ -53,7 +51,6 @@
             <p class="text-primary-100">Interactive Prototype สำหรับทดสอบ UX/UI และ Physical Experience</p>
         </header>
 
-        <!-- Digital App Section (แสดง iframe) -->
         <div id="digitalSection" class="block">
             <div class="flex flex-col lg:flex-row">
                 <div class="lg:w-96 mx-auto lg:mx-0 bg-gray-900 rounded-3xl p-4 m-6 shadow-2xl">
@@ -65,7 +62,6 @@
                         </iframe>
                     </div>
                 </div>
-                <!-- Digital Features Panel (เหมือนเดิม) -->
                 <div class="flex-1 p-6">
                     <h2 class="text-xl font-bold text-gray-800 mb-4">Digital App Features</h2>
                     <div class="space-y-4">
@@ -93,35 +89,28 @@
             </div>
         </div>
 
-        <!-- Physical/Service Prototype Section -->
         <div id="physicalSection" class="hidden">
 
-            <!-- Park Layout Visualization -->
             <div class="p-6">
                 <h2 class="text-2xl font-bold text-gray-800 mb-6">Physical & Service Prototype</h2>
 
-                <!-- Park Map with Interactive Elements -->
                 <div
                     class="bg-gradient-to-br from-green-100 to-green-200 rounded-2xl p-8 mb-8 relative overflow-hidden">
                     <h3 class="text-xl font-bold text-green-800 mb-4">🏞️ แผนที่สวนธนบุรีรมย์ (Interactive Mock-up)</h3>
 
-                    <!-- Park Elements -->
                     <div class="grid grid-cols-12 grid-rows-8 gap-2 h-96 relative">
 
-                        <!-- Entrance -->
                         <div
                             class="col-span-2 row-span-1 bg-gray-600 rounded-lg flex items-center justify-center text-white text-xs font-bold">
                             ประตูทางเข้า
                         </div>
 
-                        <!-- Parking Area -->
                         <div class="col-span-3 row-span-2 bg-blue-500 rounded-lg flex items-center justify-center text-white text-sm font-bold cursor-pointer hover:bg-blue-600 transition-colors"
                             id="parkingArea">
                             🅿️ ที่จอดรถ<br>
                             <span class="text-xs">25/100 ช่อง</span>
                         </div>
 
-                        <!-- Running Track -->
                         <div
                             class="col-span-7 row-span-6 border-4 border-red-500 border-dashed rounded-3xl bg-red-50 flex items-center justify-center relative">
                             <div class="text-center">
@@ -129,7 +118,6 @@
                                 <span class="text-red-700 font-bold">ลู่วิ่ง 2 กม.</span>
                             </div>
 
-                            <!-- Water Stations on Track -->
                             <div class="absolute top-4 left-4 bg-blue-400 rounded-full w-8 h-8 flex items-center justify-center text-white font-bold cursor-pointer hover:animate-bounce-slow"
                                 title="จุดน้ำดื่ม 1">💧</div>
                             <div class="absolute top-4 right-4 bg-blue-400 rounded-full w-8 h-8 flex items-center justify-center text-white font-bold cursor-pointer hover:animate-bounce-slow"
@@ -140,26 +128,22 @@
                                 title="จุดน้ำดื่ม 4">💧</div>
                         </div>
 
-                        <!-- Activity Area A -->
                         <div class="col-span-2 row-span-2 bg-purple-400 rounded-lg flex items-center justify-center text-white text-xs font-bold cursor-pointer hover:bg-purple-500 transition-colors"
                             id="activityAreaA">
                             🧘‍♀️ ลานโยคะ A
                         </div>
 
-                        <!-- Restrooms -->
                         <div class="col-span-2 row-span-1 bg-gray-400 rounded-lg flex items-center justify-center text-white text-xs font-bold cursor-pointer hover:bg-gray-500 transition-colors"
                             id="restroom1">
                             🚻 ห้องน้ำ 1
                         </div>
 
-                        <!-- Playground -->
                         <div class="col-span-3 row-span-2 bg-yellow-400 rounded-lg flex items-center justify-center text-white text-sm font-bold cursor-pointer hover:bg-yellow-500 transition-colors"
                             id="playground">
                             🛝 สนามเด็กเล่น<br>
                             <span class="text-xs">(เพิ่มใหม่)</span>
                         </div>
 
-                        <!-- Lighting System -->
                         <div class="absolute inset-0 pointer-events-none">
                             <div class="absolute top-8 left-8 w-4 h-4 bg-yellow-300 rounded-full animate-pulse"
                                 title="ไฟ LED โซลาร์เซลล์"></div>
@@ -173,10 +157,8 @@
                     </div>
                 </div>
 
-                <!-- Physical Prototypes Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
 
-                    <!-- Smart Lighting System -->
                     <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
                         <div class="bg-yellow-100 rounded-lg p-4 mb-4">
                             <div class="flex items-center gap-3 mb-3">
@@ -189,7 +171,6 @@
                                 </div>
                             </div>
 
-                            <!-- Light Control Demo -->
                             <div class="space-y-3">
                                 <div class="flex items-center justify-between">
                                     <span class="text-sm">ความสว่าง</span>
@@ -214,7 +195,6 @@
                         </div>
                     </div>
 
-                    <!-- Water Station -->
                     <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
                         <div class="bg-blue-100 rounded-lg p-4 mb-4">
                             <div class="flex items-center gap-3 mb-3">
@@ -227,7 +207,6 @@
                                 </div>
                             </div>
 
-                            <!-- Water Station Features -->
                             <div class="space-y-3">
                                 <div class="flex items-center justify-between">
                                     <span class="text-sm">สถานะน้ำ</span>
@@ -248,7 +227,6 @@
                         </div>
                     </div>
 
-                    <!-- Digital Signage -->
                     <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
                         <div class="bg-green-100 rounded-lg p-4 mb-4">
                             <div class="flex items-center gap-3 mb-3">
@@ -261,7 +239,6 @@
                                 </div>
                             </div>
 
-                            <!-- QR Code Demo -->
                             <div class="space-y-3">
                                 <div class="bg-white border-2 border-dashed border-gray-300 rounded p-3 text-center">
                                     <div
@@ -286,13 +263,11 @@
                     </div>
                 </div>
 
-                <!-- Service Prototypes -->
                 <div class="bg-gradient-to-r from-purple-100 to-pink-100 rounded-2xl p-8">
                     <h3 class="text-xl font-bold text-purple-800 mb-6">🎪 Service Experience Prototypes</h3>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                        <!-- Community Events -->
                         <div class="bg-white rounded-lg p-6 shadow-md">
                             <h4 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <span class="text-xl">🏃‍♀️</span> Community Run Event
@@ -319,7 +294,6 @@
                             </div>
                         </div>
 
-                        <!-- Health Workshop -->
                         <div class="bg-white rounded-lg p-6 shadow-md">
                             <h4 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <span class="text-xl">🧘‍♀️</span> Wellness Workshop
@@ -348,7 +322,6 @@
                     </div>
                 </div>
 
-                <!-- Physical Testing Schedule -->
                 <div class="mt-8 bg-white rounded-xl shadow-lg p-6">
                     <h3 class="text-xl font-bold text-gray-800 mb-4">📋 Physical Prototype Testing Schedule</h3>
 
@@ -398,7 +371,6 @@
                     </div>
                 </div>
 
-                <!-- Success Metrics -->
                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
 
                     <div class="bg-green-50 border border-green-200 rounded-lg p-6">
@@ -449,9 +421,7 @@
         </div>
     </div>
 
-    <!-- Interactive JavaScript -->
     <script>
-        // Tab switching functionality
         const digitalTab = document.getElementById('digitalTab');
         const physicalTab = document.getElementById('physicalTab');
         const digitalSection = document.getElementById('digitalSection');
@@ -475,13 +445,11 @@
             digitalTab.classList.add('text-white');
         });
 
-        // Interactive park elements
         const parkingArea = document.getElementById('parkingArea');
         const activityAreaA = document.getElementById('activityAreaA');
         const restroom1 = document.getElementById('restroom1');
         const playground = document.getElementById('playground');
 
-        // Mock interaction functions
         function showParkingInfo() {
             alert('🅿️ ที่จอดรถ\n\nสถานะ: 25 ช่องว่าง (จาก 100 ช่อง)\nเวลาอัปเดต: 9:41 น.\nคาดการณ์: เต็มภายใน 2 ชั่วโมง\n\n💡 แนะนำ: มาก่อน 10:00 หรือหลัง 16:00');
         }
@@ -521,9 +489,7 @@
             });
         });
 
-        // Simulated real-time updates
         function updateRealTimeData() {
-            // Simulate parking space changes
             const parkingStatus = document.querySelector('#parkingArea span');
             if (parkingStatus) {
                 const currentSpaces = parseInt(parkingStatus.textContent.match(/\d+/)[0]);
@@ -531,7 +497,6 @@
                 parkingStatus.textContent = `${newSpaces}/100 ช่อง`;
             }
 
-            // Update activity participant counts
             const activityCounts = document.querySelectorAll('p[class*="text-xs"]:not([class*="text-gray"])');
             activityCounts.forEach(count => {
                 if (count.textContent.includes('/')) {
@@ -542,10 +507,8 @@
             });
         }
 
-        // Update real-time data every 30 seconds
         setInterval(updateRealTimeData, 30000);
 
-        // Initialize with welcome message
         setTimeout(() => {
             console.log('🏞️ สวนธนบุรีรมย์ Prototype เริ่มทำงานแล้ว!');
             console.log('💡 คลิกที่องค์ประกอบต่างๆ ในแผนที่เพื่อดูข้อมูลเพิ่มเติม');
