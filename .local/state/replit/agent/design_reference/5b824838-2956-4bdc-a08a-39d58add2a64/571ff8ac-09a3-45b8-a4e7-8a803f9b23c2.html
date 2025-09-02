@@ -1,0 +1,1099 @@
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สวนธนบุรีรมย์ - แอปพลิเคชัน</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                borderRadius: {
+                    lg: "var(--radius)",
+                    md: "calc(var(--radius) - 2px)", 
+                    sm: "calc(var(--radius) - 4px)",
+                },
+                colors: {
+                    background: "var(--background)",
+                    foreground: "var(--foreground)",
+                    card: {
+                        DEFAULT: "var(--card)",
+                        foreground: "var(--card-foreground)",
+                    },
+                    popover: {
+                        DEFAULT: "var(--popover)",
+                        foreground: "var(--popover-foreground)",
+                    },
+                    primary: {
+                        DEFAULT: "var(--primary)",
+                        foreground: "var(--primary-foreground)",
+                    },
+                    secondary: {
+                        DEFAULT: "var(--secondary)",
+                        foreground: "var(--secondary-foreground)",
+                    },
+                    muted: {
+                        DEFAULT: "var(--muted)",
+                        foreground: "var(--muted-foreground)",
+                    },
+                    accent: {
+                        DEFAULT: "var(--accent)",
+                        foreground: "var(--accent-foreground)",
+                    },
+                    destructive: {
+                        DEFAULT: "var(--destructive)",
+                        foreground: "var(--destructive-foreground)",
+                    },
+                    border: "var(--border)",
+                    input: "var(--input)",
+                    ring: "var(--ring)",
+                    chart: {
+                        "1": "var(--chart-1)",
+                        "2": "var(--chart-2)",
+                        "3": "var(--chart-3)",
+                        "4": "var(--chart-4)",
+                        "5": "var(--chart-5)",
+                    }
+                },
+                fontFamily: {
+                    sans: ["var(--font-sans)"],
+                    serif: ["var(--font-serif)"],
+                    mono: ["var(--font-mono)"],
+                }
+            },
+        }
+    };
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --background: hsl(120 20% 97%);
+            --foreground: hsl(220 9% 16%);
+            --card: hsl(0 0% 100%);
+            --card-foreground: hsl(220 9% 16%);
+            --popover: hsl(0 0% 100%);
+            --popover-foreground: hsl(220 9% 16%);
+            --primary: hsl(142 76% 36%);
+            --primary-foreground: hsl(0 0% 98%);
+            --secondary: hsl(217 78% 51%);
+            --secondary-foreground: hsl(0 0% 98%);
+            --muted: hsl(120 15% 92%);
+            --muted-foreground: hsl(220 9% 42%);
+            --accent: hsl(24 95% 53%);
+            --accent-foreground: hsl(0 0% 98%);
+            --destructive: hsl(0 84% 60%);
+            --destructive-foreground: hsl(0 0% 98%);
+            --border: hsl(120 15% 87%);
+            --input: hsl(120 15% 87%);
+            --ring: hsl(142 76% 36%);
+            --radius: 12px;
+            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--background);
+            color: var(--foreground);
+        }
+        
+        .app-container {
+            max-width: 390px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: var(--background);
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        .status-bar {
+            height: 44px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 390px;
+            background: var(--card);
+            border-top: 1px solid var(--border);
+            padding: 12px 0 34px 0;
+            display: flex;
+            justify-content: space-around;
+            z-index: 50;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 12px;
+            border-radius: 12px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .nav-item.active {
+            background: var(--primary);
+            color: var(--primary-foreground);
+        }
+        
+        .nav-item i {
+            font-size: 18px;
+        }
+        
+        .nav-item span {
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        .screen {
+            display: none;
+            padding-bottom: 120px;
+        }
+        
+        .screen.active {
+            display: block;
+        }
+        
+        .weather-gradient {
+            background: linear-gradient(135deg, #87CEEB 0%, #98D8E8 100%);
+        }
+        
+        .activity-gradient {
+            background: linear-gradient(135deg, var(--accent) 0%, #FF6B35 100%);
+        }
+        
+        .map-container {
+            background: linear-gradient(135deg, #E8F5E8 0%, #F0F9F4 100%);
+            position: relative;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- @COMPONENT: StatusBar -->
+        <div class="status-bar">
+            <span>9:41</span>
+            <span>สวนธนบุรีรมย์</span>
+            <div class="flex items-center gap-1">
+                <i class="fas fa-signal text-xs"></i>
+                <i class="fas fa-wifi text-xs"></i>
+                <i class="fas fa-battery-three-quarters text-xs"></i>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: StatusBar -->
+
+        <!-- @COMPONENT: HomeScreen -->
+        <div class="screen active" id="home">
+            <!-- Hero Section with Weather -->
+            <div class="weather-gradient px-6 py-8 text-white">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h1 class="text-2xl font-bold">สวัสดี แพรว! 👋</h1>
+                        <p class="text-white/80">วันนี้เป็นวันที่ดีสำหรับออกกำลังกาย</p>
+                    </div>
+                    <!-- User avatar showing a young Asian woman in athletic wear -->
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=80&h=80" alt="แพรว" class="w-12 h-12 rounded-full border-2 border-white" />
+                </div>
+                
+                <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-sun text-2xl"></i>
+                            <div>
+                                <p class="text-lg font-semibold">28°C</p>
+                                <p class="text-sm text-white/80">แจ่มใส</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm text-white/80">เปิด: 05:00 - 22:00</p>
+                            <p class="text-xs text-white/60">อัปเดต 5 นาทีที่แล้ว</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="px-6 py-6">
+                <h2 class="text-lg font-semibold mb-4 text-foreground">การเข้าใช้ด่วน</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-card rounded-2xl p-4 border border-border" data-event="click:navigateToMap">
+                        <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center mb-3">
+                            <i class="fas fa-route text-primary"></i>
+                        </div>
+                        <h3 class="font-semibold text-card-foreground">แผนที่สวน</h3>
+                        <p class="text-sm text-muted-foreground">เส้นทางวิ่ง และสิ่งอำนวยความสะดวก</p>
+                    </div>
+                    
+                    <div class="bg-card rounded-2xl p-4 border border-border" data-event="click:checkParking">
+                        <div class="w-10 h-10 bg-secondary/10 rounded-xl flex items-center justify-center mb-3">
+                            <i class="fas fa-parking text-secondary"></i>
+                        </div>
+                        <h3 class="font-semibold text-card-foreground">ที่จอดรถ</h3>
+                        <p class="text-sm text-muted-foreground">เหลือ 24 ที่</p>
+                    </div>
+                    
+                    <div class="bg-card rounded-2xl p-4 border border-border" data-event="click:viewActivities">
+                        <div class="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center mb-3">
+                            <i class="fas fa-calendar text-accent"></i>
+                        </div>
+                        <h3 class="font-semibold text-card-foreground">กิจกรรมวันนี้</h3>
+                        <p class="text-sm text-muted-foreground">โยคะในสวน 18:00</p>
+                    </div>
+                    
+                    <div class="bg-card rounded-2xl p-4 border border-border" data-event="click:findFriends">
+                        <div class="w-10 h-10 bg-green-500/10 rounded-xl flex items-center justify-center mb-3">
+                            <i class="fas fa-users text-green-500"></i>
+                        </div>
+                        <h3 class="font-semibold text-card-foreground">หาเพื่อนวิ่ง</h3>
+                        <p class="text-sm text-muted-foreground">12 คนกำลังวิ่งอยู่</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Today's Activities -->
+            <div class="px-6 pb-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-semibold text-foreground">กิจกรรมแนะนำ</h2>
+                    <button class="text-primary text-sm font-medium">ดูทั้งหมด</button>
+                </div>
+                
+                <div class="space-y-3">
+                    <div class="activity-gradient rounded-2xl p-4 text-white">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="font-semibold">โยคะในสวนสุขภาพ</h3>
+                            <span class="bg-white/20 px-2 py-1 rounded-lg text-xs">18:00</span>
+                        </div>
+                        <p class="text-white/80 text-sm mb-3">ผ่อนคลายร่างกายและจิตใจท่ามกลางธรรมชาติ</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <i class="fas fa-user-friends text-sm"></i>
+                                <span class="text-sm">15/20 คน</span>
+                            </div>
+                            <button class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg text-sm font-medium">ลงทะเบียน</button>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-card rounded-2xl p-4 border border-border">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 bg-green-500/10 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-running text-green-500"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-card-foreground">Morning Run กลุ่ม</h3>
+                                <p class="text-sm text-muted-foreground">พรุ่งนี้ 06:00 • 5 กม.</p>
+                            </div>
+                            <button class="text-primary text-sm font-medium">เข้าร่วม</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Community Posts -->
+            <div class="px-6 pb-6">
+                <h2 class="text-lg font-semibold mb-4 text-foreground">กิจกรรมจากเพื่อน</h2>
+                <div class="space-y-4">
+                    <div class="bg-card rounded-2xl p-4 border border-border">
+                        <div class="flex items-center gap-3 mb-3">
+                            <!-- Profile image of a person exercising in a park -->
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=40&h=40" alt="จิม" class="w-10 h-10 rounded-full" />
+                            <div class="flex-1">
+                                <p class="font-medium text-card-foreground">จิม</p>
+                                <p class="text-xs text-muted-foreground">15 นาทีที่แล้ว</p>
+                            </div>
+                            <i class="fas fa-heart text-red-500"></i>
+                        </div>
+                        <!-- Beautiful park scenery with morning runners -->
+                        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=350&h=200" alt="วิ่งเช้าในสวน" class="w-full h-40 object-cover rounded-xl mb-3" />
+                        <p class="text-sm text-card-foreground">เช้านี้วิ่ง 5K ครบ! อากาศดี บรรยากาศสบายมาก 🏃‍♀️💚</p>
+                        <div class="flex items-center gap-4 mt-3 text-sm text-muted-foreground">
+                            <span><i class="fas fa-heart mr-1"></i> 23</span>
+                            <span><i class="fas fa-comment mr-1"></i> 5</span>
+                            <span><i class="fas fa-share mr-1"></i> แชร์</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: HomeScreen -->
+
+        <!-- @COMPONENT: MapScreen -->
+        <div class="screen" id="map">
+            <div class="map-container h-96 relative">
+                <!-- Park map background with running trails -->
+                <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=390&h=384" alt="ภาพถ่ายทางอากาศของสวนสาธารณะ" class="w-full h-full object-cover" />
+                
+                <!-- Map Controls -->
+                <div class="absolute top-4 left-4 right-4">
+                    <div class="bg-card rounded-2xl p-4 border border-border shadow-lg">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-search text-muted-foreground"></i>
+                            <input type="text" placeholder="ค้นหาสถานที่..." class="flex-1 bg-transparent outline-none text-card-foreground" data-mock="true" />
+                            <button class="text-primary">
+                                <i class="fas fa-microphone"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Map Markers -->
+                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                    <div class="w-6 h-6 bg-primary rounded-full border-4 border-white shadow-lg animate-pulse"></div>
+                </div>
+                
+                <div class="absolute top-1/3 left-1/4">
+                    <div class="w-4 h-4 bg-secondary rounded-full border-2 border-white"></div>
+                </div>
+                
+                <div class="absolute bottom-1/3 right-1/4">
+                    <div class="w-4 h-4 bg-accent rounded-full border-2 border-white"></div>
+                </div>
+
+                <!-- Map Legend -->
+                <div class="absolute bottom-4 left-4 right-4">
+                    <div class="bg-card/90 backdrop-blur-sm rounded-2xl p-3 border border-border">
+                        <div class="grid grid-cols-4 gap-2 text-xs">
+                            <div class="flex items-center gap-1">
+                                <div class="w-2 h-2 bg-primary rounded-full"></div>
+                                <span class="text-card-foreground">ตำแหน่งคุณ</span>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <div class="w-2 h-2 bg-secondary rounded-full"></div>
+                                <span class="text-card-foreground">น้ำดื่ม</span>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <div class="w-2 h-2 bg-accent rounded-full"></div>
+                                <span class="text-card-foreground">ห้องน้ำ</span>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                <span class="text-card-foreground">ที่จอดรถ</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Running Routes -->
+            <div class="px-6 py-6">
+                <h2 class="text-lg font-semibold mb-4 text-foreground">เส้นทางแนะนำ</h2>
+                <div class="space-y-3">
+                    <div class="bg-card rounded-2xl p-4 border border-border">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-green-500/10 rounded-xl flex items-center justify-center">
+                                    <i class="fas fa-running text-green-500"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-card-foreground">เส้นทางผู้เริ่มต้น</h3>
+                                    <p class="text-sm text-muted-foreground">2.5 กม. • 25 นาที</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-medium text-green-500">ง่าย</div>
+                                <div class="flex text-yellow-400">
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="far fa-star text-xs"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 text-xs text-muted-foreground mb-3">
+                            <span><i class="fas fa-tint mr-1"></i> 3 จุดน้ำ</span>
+                            <span><i class="fas fa-restroom mr-1"></i> 2 ห้องน้ำ</span>
+                            <span><i class="fas fa-lightbulb mr-1"></i> มีไฟ</span>
+                        </div>
+                        <button class="w-full bg-primary text-primary-foreground py-2 rounded-xl font-medium">เริ่มนำทาง</button>
+                    </div>
+
+                    <div class="bg-card rounded-2xl p-4 border border-border">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center">
+                                    <i class="fas fa-biking text-accent"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-card-foreground">เส้นทางจักรยาน</h3>
+                                    <p class="text-sm text-muted-foreground">5.2 กม. • 20 นาที</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-medium text-accent">ปานกลาง</div>
+                                <div class="flex text-yellow-400">
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="fas fa-star text-xs"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 text-xs text-muted-foreground mb-3">
+                            <span><i class="fas fa-tint mr-1"></i> 4 จุดน้ำ</span>
+                            <span><i class="fas fa-restroom mr-1"></i> 3 ห้องน้ำ</span>
+                            <span><i class="fas fa-tree mr-1"></i> ร่มรื่น</span>
+                        </div>
+                        <button class="w-full bg-accent text-accent-foreground py-2 rounded-xl font-medium">เริ่มนำทาง</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Facilities List -->
+            <div class="px-6 pb-6">
+                <h2 class="text-lg font-semibold mb-4 text-foreground">สิ่งอำนวยความสะดวก</h2>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-card rounded-xl p-3 border border-border">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-parking text-green-500"></i>
+                            <span class="font-medium text-card-foreground text-sm">ที่จอดรถ</span>
+                        </div>
+                        <p class="text-xs text-muted-foreground">เหลือ 24/100 ที่</p>
+                    </div>
+                    
+                    <div class="bg-card rounded-xl p-3 border border-border">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-tint text-secondary"></i>
+                            <span class="font-medium text-card-foreground text-sm">จุดน้ำดื่ม</span>
+                        </div>
+                        <p class="text-xs text-muted-foreground">12 จุดทั่วสวน</p>
+                    </div>
+                    
+                    <div class="bg-card rounded-xl p-3 border border-border">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-restroom text-accent"></i>
+                            <span class="font-medium text-card-foreground text-sm">ห้องน้ำ</span>
+                        </div>
+                        <p class="text-xs text-muted-foreground">6 จุด สะอาด</p>
+                    </div>
+                    
+                    <div class="bg-card rounded-xl p-3 border border-border">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-child text-purple-500"></i>
+                            <span class="font-medium text-card-foreground text-sm">สนามเด็กเล่น</span>
+                        </div>
+                        <p class="text-xs text-muted-foreground">3 โซน ปลอดภัย</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: MapScreen -->
+
+        <!-- @COMPONENT: ActivityScreen -->
+        <div class="screen" id="activities">
+            <div class="px-6 py-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h1 class="text-2xl font-bold text-foreground">กิจกรรม & อีเวนต์</h1>
+                    <button class="bg-primary text-primary-foreground px-4 py-2 rounded-xl text-sm font-medium">
+                        <i class="fas fa-plus mr-1"></i> สร้างกิจกรรม
+                    </button>
+                </div>
+
+                <!-- Activity Categories -->
+                <div class="flex gap-3 mb-6 overflow-x-auto pb-2">
+                    <button class="bg-primary text-primary-foreground px-4 py-2 rounded-2xl text-sm font-medium whitespace-nowrap">ทั้งหมด</button>
+                    <button class="bg-muted text-muted-foreground px-4 py-2 rounded-2xl text-sm font-medium whitespace-nowrap">วิ่ง</button>
+                    <button class="bg-muted text-muted-foreground px-4 py-2 rounded-2xl text-sm font-medium whitespace-nowrap">โยคะ</button>
+                    <button class="bg-muted text-muted-foreground px-4 py-2 rounded-2xl text-sm font-medium whitespace-nowrap">ปั่นจักรยาน</button>
+                    <button class="bg-muted text-muted-foreground px-4 py-2 rounded-2xl text-sm font-medium whitespace-nowrap">เวิร์คช็อป</button>
+                </div>
+
+                <!-- Today's Featured Activity -->
+                <div class="activity-gradient rounded-2xl p-6 text-white mb-6">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="bg-white/20 px-2 py-1 rounded-lg text-xs">วันนี้</span>
+                        <span class="bg-white/20 px-2 py-1 rounded-lg text-xs">แนะนำ</span>
+                    </div>
+                    <h2 class="text-xl font-bold mb-2">โยคะสุขภาพในสวน</h2>
+                    <p class="text-white/80 mb-4">ผ่อนคลายร่างกายและจิตใจท่ามกลางธรรมชาติ พร้อมครูโยคะมืออาชีพ</p>
+                    
+                    <div class="flex items-center gap-4 mb-4 text-sm">
+                        <div class="flex items-center gap-1">
+                            <i class="fas fa-clock"></i>
+                            <span>18:00 - 19:30</span>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>ลานหญ้าใหญ่</span>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <i class="fas fa-users"></i>
+                            <span>15/20 คน</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-3">
+                        <button class="bg-white text-accent px-6 py-3 rounded-xl font-semibold flex-1">ลงทะเบียนเลย</button>
+                        <button class="bg-white/20 backdrop-blur-sm p-3 rounded-xl">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                        <button class="bg-white/20 backdrop-blur-sm p-3 rounded-xl">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Upcoming Activities -->
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-4 text-foreground">กิจกรรมสัปดาห์นี้</h3>
+                    <div class="space-y-4">
+                        <div class="bg-card rounded-2xl p-4 border border-border">
+                            <div class="flex items-start gap-4">
+                                <div class="text-center min-w-[60px]">
+                                    <div class="text-primary text-sm font-medium">พรุ่งนี้</div>
+                                    <div class="text-2xl font-bold text-card-foreground">15</div>
+                                    <div class="text-xs text-muted-foreground">มี.ค.</div>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <h4 class="font-semibold text-card-foreground">Morning Run 5K</h4>
+                                        <span class="bg-green-500/10 text-green-500 px-2 py-1 rounded-lg text-xs">ฟรี</span>
+                                    </div>
+                                    <p class="text-sm text-muted-foreground mb-2">วิ่งเช้าสดชื่นร่วมกับเพื่อนใหม่</p>
+                                    <div class="flex items-center gap-3 text-xs text-muted-foreground">
+                                        <span><i class="fas fa-clock mr-1"></i> 06:00</span>
+                                        <span><i class="fas fa-users mr-1"></i> 25 คน</span>
+                                        <span><i class="fas fa-route mr-1"></i> 5 กม.</span>
+                                    </div>
+                                </div>
+                                <button class="text-primary text-sm font-medium">เข้าร่วม</button>
+                            </div>
+                        </div>
+
+                        <div class="bg-card rounded-2xl p-4 border border-border">
+                            <div class="flex items-start gap-4">
+                                <div class="text-center min-w-[60px]">
+                                    <div class="text-secondary text-sm font-medium">เสาร์</div>
+                                    <div class="text-2xl font-bold text-card-foreground">16</div>
+                                    <div class="text-xs text-muted-foreground">มี.ค.</div>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <h4 class="font-semibold text-card-foreground">เวิร์คช็อปสุขภาพครอบครัว</h4>
+                                        <span class="bg-accent/10 text-accent px-2 py-1 rounded-lg text-xs">50฿</span>
+                                    </div>
+                                    <p class="text-sm text-muted-foreground mb-2">เรียนรู้การดูแลสุขภาพแบบครอบครัว</p>
+                                    <div class="flex items-center gap-3 text-xs text-muted-foreground">
+                                        <span><i class="fas fa-clock mr-1"></i> 09:00</span>
+                                        <span><i class="fas fa-users mr-1"></i> 12/15 คน</span>
+                                        <span><i class="fas fa-graduation-cap mr-1"></i> เวิร์คช็อป</span>
+                                    </div>
+                                </div>
+                                <button class="text-primary text-sm font-medium">ลงทะเบียน</button>
+                            </div>
+                        </div>
+
+                        <div class="bg-card rounded-2xl p-4 border border-border">
+                            <div class="flex items-start gap-4">
+                                <div class="text-center min-w-[60px]">
+                                    <div class="text-purple-500 text-sm font-medium">อาทิตย์</div>
+                                    <div class="text-2xl font-bold text-card-foreground">17</div>
+                                    <div class="text-xs text-muted-foreground">มี.ค.</div>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <h4 class="font-semibold text-card-foreground">ปั่นจักรยานท่องเที่ยว</h4>
+                                        <span class="bg-green-500/10 text-green-500 px-2 py-1 rounded-lg text-xs">ฟรี</span>
+                                    </div>
+                                    <p class="text-sm text-muted-foreground mb-2">ปั่นชมความงามของสวนและแหล่งท่องเที่ยวใกล้เคียง</p>
+                                    <div class="flex items-center gap-3 text-xs text-muted-foreground">
+                                        <span><i class="fas fa-clock mr-1"></i> 16:00</span>
+                                        <span><i class="fas fa-users mr-1"></i> 8/12 คน</span>
+                                        <span><i class="fas fa-route mr-1"></i> 12 กม.</span>
+                                    </div>
+                                </div>
+                                <button class="text-primary text-sm font-medium">เข้าร่วม</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- My Registered Activities -->
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-4 text-foreground">กิจกรรมที่คุณลงทะเบียน</h3>
+                    <div class="bg-card rounded-2xl p-4 border border-border">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-12 h-12 activity-gradient rounded-xl flex items-center justify-center">
+                                <i class="fas fa-om text-white"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-card-foreground">โยคะสุขภาพในสวน</h4>
+                                <p class="text-sm text-muted-foreground">วันนี้ • 18:00 - 19:30</p>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-medium text-primary">ลงทะเบียนแล้ว</div>
+                                <div class="text-xs text-muted-foreground">อีก 8 ชั่วโมง</div>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="flex-1 bg-muted text-muted-foreground py-2 rounded-lg text-sm">ยกเลิก</button>
+                            <button class="flex-1 bg-primary text-primary-foreground py-2 rounded-lg text-sm">ดูรายละเอียด</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: ActivityScreen -->
+
+        <!-- @COMPONENT: CommunityScreen -->
+        <div class="screen" id="community">
+            <div class="px-6 py-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h1 class="text-2xl font-bold text-foreground">ชุมชน</h1>
+                    <button class="bg-primary text-primary-foreground w-10 h-10 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+
+                <!-- Community Stats -->
+                <div class="bg-gradient-to-r from-primary to-secondary rounded-2xl p-6 text-white mb-6">
+                    <h2 class="text-lg font-semibold mb-4">สถิติชุมชน</h2>
+                    <div class="grid grid-cols-3 gap-4">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold">1,247</div>
+                            <div class="text-white/80 text-sm">สมาชิก</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold">156</div>
+                            <div class="text-white/80 text-sm">กิจกรรมเดือนนี้</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold">89</div>
+                            <div class="text-white/80 text-sm">คนวิ่งวันนี้</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <button class="bg-card border border-border rounded-2xl p-4 text-left">
+                        <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center mb-2">
+                            <i class="fas fa-users text-primary"></i>
+                        </div>
+                        <h3 class="font-semibold text-card-foreground">หาเพื่อนวิ่ง</h3>
+                        <p class="text-sm text-muted-foreground">ค้นหาเพื่อนที่มีไลฟ์สไตล์ใกล้เคียง</p>
+                    </button>
+                    
+                    <button class="bg-card border border-border rounded-2xl p-4 text-left">
+                        <div class="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center mb-2">
+                            <i class="fas fa-trophy text-accent"></i>
+                        </div>
+                        <h3 class="font-semibold text-card-foreground">ชาเลนจ์</h3>
+                        <p class="text-sm text-muted-foreground">เข้าร่วมการแข่งขันและชิงรางวัล</p>
+                    </button>
+                </div>
+
+                <!-- Community Feed -->
+                <div class="space-y-4 mb-6">
+                    <div class="bg-card rounded-2xl p-4 border border-border">
+                        <div class="flex items-center gap-3 mb-3">
+                            <!-- Profile image of a smiling runner -->
+                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=40&h=40" alt="มาลี" class="w-10 h-10 rounded-full" />
+                            <div class="flex-1">
+                                <p class="font-medium text-card-foreground">มาลี</p>
+                                <p class="text-xs text-muted-foreground">30 นาทีที่แล้ว • สวนธนบุรีรมย์</p>
+                            </div>
+                            <button class="text-muted-foreground">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </button>
+                        </div>
+                        
+                        <p class="text-card-foreground mb-3">เสร็จแล้ว! วิ่ง 7K เช้านี้ รู้สึกสดชื่นมาก 🏃‍♀️✨ ใครมาวิ่งด้วยกันพรุ่งนี้มั้ยครับ?</p>
+                        
+                        <!-- Running activity screenshot or map -->
+                        <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=350&h=200" alt="สถิติการวิ่ง" class="w-full h-40 object-cover rounded-xl mb-3" />
+                        
+                        <div class="flex items-center justify-between text-sm">
+                            <div class="flex items-center gap-4">
+                                <button class="flex items-center gap-1 text-red-500">
+                                    <i class="fas fa-heart"></i>
+                                    <span>28</span>
+                                </button>
+                                <button class="flex items-center gap-1 text-muted-foreground">
+                                    <i class="fas fa-comment"></i>
+                                    <span>12</span>
+                                </button>
+                                <button class="flex items-center gap-1 text-muted-foreground">
+                                    <i class="fas fa-share"></i>
+                                    <span>แชร์</span>
+                                </button>
+                            </div>
+                            <span class="text-muted-foreground text-xs">7.2 กม. • 35 นาที</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-card rounded-2xl p-4 border border-border">
+                        <div class="flex items-center gap-3 mb-3">
+                            <!-- Profile image of a cyclist -->
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=40&h=40" alt="ต้อม" class="w-10 h-10 rounded-full" />
+                            <div class="flex-1">
+                                <p class="font-medium text-card-foreground">ต้อม</p>
+                                <p class="text-xs text-muted-foreground">1 ชั่วโมงที่แล้ว • สวนธนบุรีรมย์</p>
+                            </div>
+                            <button class="text-muted-foreground">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </button>
+                        </div>
+                        
+                        <p class="text-card-foreground mb-3">มีใครอยากมาปั่นจักรยานร่วมกันไหม? เตรียมจัดกลุ่มปั่นเย็นนี้ 🚴‍♂️</p>
+                        
+                        <div class="bg-muted rounded-xl p-3 mb-3">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 bg-accent rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-biking text-white text-sm"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-card-foreground text-sm">กลุ่มปั่นจักรยานเย็น</p>
+                                    <p class="text-xs text-muted-foreground">วันนี้ 17:00 • 10 กม.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between text-sm">
+                            <div class="flex items-center gap-4">
+                                <button class="flex items-center gap-1 text-red-500">
+                                    <i class="fas fa-heart"></i>
+                                    <span>15</span>
+                                </button>
+                                <button class="flex items-center gap-1 text-muted-foreground">
+                                    <i class="fas fa-comment"></i>
+                                    <span>8</span>
+                                </button>
+                                <button class="flex items-center gap-1 text-primary">
+                                    <i class="fas fa-user-plus"></i>
+                                    <span>เข้าร่วม</span>
+                                </button>
+                            </div>
+                            <span class="text-muted-foreground text-xs">5/8 คน</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-card rounded-2xl p-4 border border-border">
+                        <div class="flex items-center gap-3 mb-3">
+                            <!-- Profile image of a yoga instructor -->
+                            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=40&h=40" alt="แนน" class="w-10 h-10 rounded-full" />
+                            <div class="flex-1">
+                                <p class="font-medium text-card-foreground">แนน</p>
+                                <p class="text-xs text-muted-foreground">2 ชั่วโมงที่แล้ว • สวนธนบุรีรมย์</p>
+                            </div>
+                            <button class="text-muted-foreground">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </button>
+                        </div>
+                        
+                        <p class="text-card-foreground mb-3">เช้านี้ฝึกโยคะที่ลานหญ้า บรรยากาศดีมาก ขอบคุณทุกคนที่มาร่วมกัน 🧘‍♀️💚</p>
+                        
+                        <!-- Group yoga session in the park -->
+                        <img src="https://pixabay.com/get/gd56eb49ad0c15aac1760dec3167e91e012493520f0cb5c302a25e4b104a0df40a198b48e65a8fa154eacb6d72d731e8eeefc03cab14fa141dd01741650f6e0f6_1280.jpg" alt="โยคะในสวน" class="w-full h-40 object-cover rounded-xl mb-3" />
+                        
+                        <div class="flex items-center justify-between text-sm">
+                            <div class="flex items-center gap-4">
+                                <button class="flex items-center gap-1 text-red-500">
+                                    <i class="fas fa-heart"></i>
+                                    <span>45</span>
+                                </button>
+                                <button class="flex items-center gap-1 text-muted-foreground">
+                                    <i class="fas fa-comment"></i>
+                                    <span>18</span>
+                                </button>
+                                <button class="flex items-center gap-1 text-muted-foreground">
+                                    <i class="fas fa-share"></i>
+                                    <span>แชร์</span>
+                                </button>
+                            </div>
+                            <span class="text-muted-foreground text-xs">โยคะเช้า</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Challenge Section -->
+                <div class="bg-gradient-to-r from-accent to-red-500 rounded-2xl p-6 text-white mb-6">
+                    <div class="flex items-center gap-3 mb-3">
+                        <i class="fas fa-trophy text-2xl"></i>
+                        <div>
+                            <h3 class="font-bold">ชาเลนจ์เดือนมีนาคม</h3>
+                            <p class="text-white/80 text-sm">วิ่งสะสม 100 กม. ใน 1 เดือน</p>
+                        </div>
+                    </div>
+                    <div class="bg-white/20 rounded-full h-2 mb-2">
+                        <div class="bg-white rounded-full h-2 w-3/4"></div>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span>75.2 / 100 กม.</span>
+                        <span>เหลืออีก 10 วัน</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: CommunityScreen -->
+
+        <!-- @COMPONENT: ProfileScreen -->
+        <div class="screen" id="profile">
+            <div class="px-6 py-6">
+                <!-- Profile Header -->
+                <div class="bg-gradient-to-r from-primary to-secondary rounded-2xl p-6 text-white mb-6">
+                    <div class="flex items-center gap-4 mb-4">
+                        <!-- Profile image of the persona Khun Prae -->
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=80&h=80" alt="แพรว" class="w-20 h-20 rounded-full border-4 border-white" />
+                        <div class="flex-1">
+                            <h2 class="text-xl font-bold">แพรว วงศ์สุข</h2>
+                            <p class="text-white/80">สมาชิกตั้งแต่ ม.ค. 2024</p>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="bg-white/20 px-2 py-1 rounded-lg text-xs">นักวิ่งประจำ</span>
+                                <span class="bg-white/20 px-2 py-1 rounded-lg text-xs">ระดับ 5</span>
+                            </div>
+                        </div>
+                        <button class="bg-white/20 backdrop-blur-sm p-2 rounded-xl">
+                            <i class="fas fa-cog"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="grid grid-cols-3 gap-4">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold">127</div>
+                            <div class="text-white/80 text-sm">วิ่งทั้งหมด</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold">856</div>
+                            <div class="text-white/80 text-sm">กม. สะสม</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold">42</div>
+                            <div class="text-white/80 text-sm">เพื่อน</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activities -->
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-4 text-foreground">กิจกรรมล่าสุด</h3>
+                    <div class="space-y-3">
+                        <div class="bg-card rounded-xl p-4 border border-border">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 bg-green-500/10 rounded-xl flex items-center justify-center">
+                                        <i class="fas fa-running text-green-500"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-card-foreground">เช้าวิ่ง</p>
+                                        <p class="text-sm text-muted-foreground">วันนี้ • 06:30</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-semibold text-card-foreground">5.2 กม.</p>
+                                    <p class="text-sm text-muted-foreground">26:15</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-card rounded-xl p-4 border border-border">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center">
+                                        <i class="fas fa-om text-accent"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-card-foreground">โยคะเย็น</p>
+                                        <p class="text-sm text-muted-foreground">เมื่อวาน • 18:00</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-semibold text-card-foreground">90 นาที</p>
+                                    <p class="text-sm text-muted-foreground">เข้าร่วม</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-card rounded-xl p-4 border border-border">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 bg-secondary/10 rounded-xl flex items-center justify-center">
+                                        <i class="fas fa-biking text-secondary"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-card-foreground">ปั่นจักรยาน</p>
+                                        <p class="text-sm text-muted-foreground">3 วันที่แล้ว • 16:30</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-semibold text-card-foreground">12.8 กม.</p>
+                                    <p class="text-sm text-muted-foreground">45:20</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Achievements -->
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-4 text-foreground">ความสำเร็จ</h3>
+                    <div class="grid grid-cols-4 gap-3">
+                        <div class="bg-card rounded-xl p-3 border border-border text-center">
+                            <div class="w-10 h-10 bg-yellow-500/10 rounded-full flex items-center justify-center mx-auto mb-2">
+                                <i class="fas fa-medal text-yellow-500"></i>
+                            </div>
+                            <p class="text-xs text-muted-foreground">วิ่ง 100K</p>
+                        </div>
+                        
+                        <div class="bg-card rounded-xl p-3 border border-border text-center">
+                            <div class="w-10 h-10 bg-purple-500/10 rounded-full flex items-center justify-center mx-auto mb-2">
+                                <i class="fas fa-fire text-purple-500"></i>
+                            </div>
+                            <p class="text-xs text-muted-foreground">Streak 30</p>
+                        </div>
+                        
+                        <div class="bg-card rounded-xl p-3 border border-border text-center">
+                            <div class="w-10 h-10 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-2">
+                                <i class="fas fa-trophy text-green-500"></i>
+                            </div>
+                            <p class="text-xs text-muted-foreground">ชาเลนจ์ 5</p>
+                        </div>
+                        
+                        <div class="bg-card rounded-xl p-3 border border-border text-center">
+                            <div class="w-10 h-10 bg-blue-500/10 rounded-full flex items-center justify-center mx-auto mb-2">
+                                <i class="fas fa-heart text-blue-500"></i>
+                            </div>
+                            <p class="text-xs text-muted-foreground">สุขภาพดี</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Settings -->
+                <div class="space-y-3">
+                    <div class="bg-card rounded-xl p-4 border border-border">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <i class="fas fa-bell text-muted-foreground"></i>
+                                <span class="text-card-foreground">การแจ้งเตือน</span>
+                            </div>
+                            <div class="w-12 h-6 bg-primary rounded-full relative">
+                                <div class="w-5 h-5 bg-white rounded-full absolute right-0.5 top-0.5 transition-all"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-card rounded-xl p-4 border border-border">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <i class="fas fa-moon text-muted-foreground"></i>
+                                <span class="text-card-foreground">โหมดมืด</span>
+                            </div>
+                            <div class="w-12 h-6 bg-muted rounded-full relative">
+                                <div class="w-5 h-5 bg-white rounded-full absolute left-0.5 top-0.5 transition-all"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-card rounded-xl p-4 border border-border">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <i class="fas fa-shield-alt text-muted-foreground"></i>
+                                <span class="text-card-foreground">ความเป็นส่วนตัว</span>
+                            </div>
+                            <i class="fas fa-chevron-right text-muted-foreground"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-card rounded-xl p-4 border border-border">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <i class="fas fa-question-circle text-muted-foreground"></i>
+                                <span class="text-card-foreground">ช่วยเหลือ</span>
+                            </div>
+                            <i class="fas fa-chevron-right text-muted-foreground"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: ProfileScreen -->
+
+        <!-- @COMPONENT: BottomNavigation -->
+        <div class="bottom-nav">
+            <div class="nav-item active" data-screen="home">
+                <i class="fas fa-home"></i>
+                <span>หน้าหลัก</span>
+            </div>
+            <div class="nav-item" data-screen="map">
+                <i class="fas fa-map"></i>
+                <span>แผนที่</span>
+            </div>
+            <div class="nav-item" data-screen="activities">
+                <i class="fas fa-calendar-alt"></i>
+                <span>กิจกรรม</span>
+            </div>
+            <div class="nav-item" data-screen="community">
+                <i class="fas fa-users"></i>
+                <span>ชุมชน</span>
+            </div>
+            <div class="nav-item" data-screen="profile">
+                <i class="fas fa-user"></i>
+                <span>โปรไฟล์</span>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: BottomNavigation -->
+    </div>
+
+    <script>
+        // Navigation functionality
+        (function() {
+            const navItems = document.querySelectorAll('.nav-item');
+            const screens = document.querySelectorAll('.screen');
+
+            function showScreen(screenId) {
+                // Hide all screens
+                screens.forEach(screen => {
+                    screen.classList.remove('active');
+                });
+                
+                // Show target screen
+                const targetScreen = document.getElementById(screenId);
+                if (targetScreen) {
+                    targetScreen.classList.add('active');
+                }
+
+                // Update nav item states
+                navItems.forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                const activeNav = document.querySelector(`[data-screen="${screenId}"]`);
+                if (activeNav) {
+                    activeNav.classList.add('active');
+                }
+            }
+
+            // Add click listeners to nav items
+            navItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const screenId = item.getAttribute('data-screen');
+                    showScreen(screenId);
+                });
+            });
+
+            // TODO: Implement business logic for:
+            // - Real-time weather data fetching
+            // - GPS navigation and route tracking
+            // - Activity registration and booking system
+            // - Community feed with real user content
+            // - Profile statistics and achievement tracking
+            // - Push notifications for activities and updates
+            // - Offline map caching for poor connectivity areas
+        })();
+    </script>
+</body>
+</html>
